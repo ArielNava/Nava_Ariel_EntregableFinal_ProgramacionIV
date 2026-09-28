@@ -1,0 +1,73 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+.stat b{font-size:18px;display:block}
+.stat span{font-size:11px;color:var(--muted)}
+.chat-wrap{display:grid;grid-template-columns:1fr 300px;gap:16px}
+@media(max-width:900px){.chat-wrap{grid-template-columns:1fr}}
+.main-chat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;min-height:400px;display:flex;flex-direction:column}
+.chat-input-row{display:flex;gap:8px;margin-top:auto;padding-top:18px}
+.chat-input{flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);outline:none}
+.hints{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.hint{padding:6px 12px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer}
+.hint:hover{border-color:var(--primary);color:var(--primary)}
+.msg{padding:12px 14px;border-radius:10px;margin:10px 0;font-size:13px;line-height:1.6}
+.msg-user{background:var(--primary);color:white;margin-left:20px}
+.msg-ia{background:var(--bg);border:1px solid var(--border)}
+.side-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+.side-card h4{margin:0 0 10px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.q{padding:10px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);margin:6px 0;font-size:12px;cursor:pointer}
+.q:hover{border-color:var(--primary);background:var(--card2)}
+.empty{text-align:center;padding:50px 20px}
+.empty-title{font-size:18px;font-weight:800;color:var(--text);margin-top:10px}
+</style>
+
+<h1 style="font-size:22px;font-weight:800;margin:14px 0 4px">💬 Chat con la IA</h1>
+<p style="color:var(--muted);font-size:13px;margin:0 0 10px">Consulta tu inventario en lenguaje natural • Ollama local</p>
+
+<div class="stats">
+<div class="stat"><b>{{productos_count}}</b><span>Productos en BD</span></div>
+<div class="stat"><b style="color:var(--primary)">{{modelo}}</b><span>● Sistema activo</span></div>
+<div class="stat"><b>{{historial.count}}</b><span>Consultas realizadas</span></div>
+<div class="stat"><b>Bs. {{valor_total}}</b><span>Valor inventario</span></div>
+</div>
+
+<div class="chat-wrap">
+<div class="main-chat">
+{% if pregunta %}
+<div class="msg msg-user">{{pregunta}}</div>
+<div class="msg msg-ia">{{respuesta|linebreaks}}</div>
+{% else %}
+<div class="empty">
+<div style="font-size:32px">💬</div>
+<div class="empty-title">¡Hola! Soy tu asistente de inventario</div>
+</div>
+{% endif %}
+<form method="post" class="chat-input-row">{% csrf_token %}
+<input name="pregunta" id="qInput" value="{{pregunta}}" class="chat-input" placeholder="Ej: ¿Cuál es el producto más caro?" required>
+<button class="btn btn-primary">Enviar</button>
+</form>
+<div class="hints">
+<span class="hint" onclick="setQ('¿Qué productos son computadoras?')">Computadoras</span>
+<span class="hint" onclick="setQ('¿Cuál es el producto más barato?')">Más barato</span>
+<span class="hint" onclick="setQ('¿Qué productos están agotados?')">Agotados</span>
+<span class="hint" onclick="setQ('¿Cuál es el valor total?')">Valor total</span>
+</div>
+</div>
+
+<div class="side">
+<div class="side-card">
+<h4>⚡ Consultas rápidas</h4>
+<div class="q" onclick="setQ('¿Cuál es el producto más caro?')">¿Cuál es el producto más caro?</div>
+<div class="q" onclick="setQ('¿Qué productos tienen precio mayor a 500?')">¿Productos con precio mayor a 500?</div>
+<div class="q" onclick="setQ('¿Cuántos productos son laptop?')">¿Cuántos laptops hay?</div>
+<div class="q" onclick="setQ('¿Qué productos están agotados?')">¿Qué productos están agotados?</div>
+</div>
+</div>
+</div>
+
+<script>function setQ(t){document.getElementById('qInput').value=t;document.getElementById('qInput').focus();}</script>
+{% endblock %}

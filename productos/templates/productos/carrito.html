@@ -1,0 +1,51 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.cart-header{ background:linear-gradient(135deg,var(--card),#1e3a8a20); border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin-bottom:14px }
+.item-card{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; gap:12px; align-items:center; margin-bottom:10px }
+.item-info{ flex:1 }
+.badge-cod{ background:var(--bg); border:1px solid var(--border2); padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; color:var(--muted) }
+.total-box{ background:linear-gradient(135deg,#22c55e15,#16a34a25); border:1px solid #22c55e50; border-radius:14px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:18px; font-weight:900 }
+.btn{ padding:11px 18px; border-radius:10px; border:none; font-weight:800; text-decoration:none; cursor:pointer; display:inline-flex; gap:6px; align-items:center }
+.btn-blue{ background:var(--blue); color:white } .btn-red{ background:#ef4444; color:white } .btn-green{ background:#22c55e; color:white }
+.btn-ghost{ background:var(--card2); border:1px solid var(--border2); color:var(--text) }
+</style>
+
+<div class="cart-header">
+<h2 style="margin:0; font-weight:900; font-size:26px">🛒 Mi Carrito</h2>
+{% if count > 0 %}
+<p style="margin:6px 0 0 0; color:var(--muted); font-size:13px">📋 Detalle de compra ({{count}} producto{% if count != 1 %}s{% endif %}) — Total: <span style="color:#22c55e; font-weight:900">Bs {{total}}</span></p>
+{% else %}
+<p style="margin:6px 0 0 0; color:var(--muted)">Tu carrito está vacío</p>
+{% endif %}
+</div>
+
+{% if items %}
+{% for i in items %}
+<div class="item-card">
+<div class="item-info">
+<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap"><b style="font-size:14px">{{i.producto.nombre}}</b> <span class="badge-cod">{{i.producto.codigo}}</span></div>
+<div style="margin-top:4px; font-size:12px; color:var(--muted)">📝 {{i.producto.descripcion|default:"Sin descripción"}}</div>
+<div style="margin-top:6px; display:flex; gap:12px; align-items:center"><span style="background:var(--bg); padding:4px 10px; border-radius:20px; font-size:12px; font-weight:800">x {{i.cantidad}} — Bs {{i.producto.precio}} c/u</span><span style="color:#60a5fa; font-weight:900">Bs {{i.subtotal}}</span></div>
+</div>
+<a href="/quitar/{{i.producto.id}}/" style="background:#ef4444; color:white; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:900" title="Quitar">🗑️</a>
+</div>
+{% endfor %}
+
+<div class="total-box"><span>💰 TOTAL:</span><span style="color:#22c55e">Bs {{total}}</span></div>
+
+<div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; justify-content:flex-end">
+<a href="/tienda/" class="btn btn-ghost">← Seguir comprando</a>
+<a href="/vaciar/" onclick="return confirm('¿Vaciar carrito?')" class="btn btn-red">🗑️ Vaciar carrito</a>
+<a href="/finalizar/" class="btn btn-green">✅ Finalizar compra</a>
+</div>
+
+{% else %}
+<div style="text-align:center; padding:50px 20px; background:var(--card); border:1px solid var(--border); border-radius:14px">
+<div style="font-size:50px">🛒</div>
+<h3 style="margin:10px 0">Tu carrito está vacío</h3>
+<p style="color:var(--muted)">Ve a la tienda y agrega productos</p>
+<a href="/tienda/" class="btn btn-blue" style="margin-top:12px">🛍️ Ir a Tienda</a>
+</div>
+{% endif %}
+{% endblock %}

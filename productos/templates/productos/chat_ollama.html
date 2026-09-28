@@ -1,0 +1,55 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.chat-head{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+.chat-sub{color:var(--muted); font-size:13px; margin-bottom:14px}
+.chat-box{display:flex; gap:8px; margin-bottom:16px}
+.chat-input{flex:1; padding:13px 16px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); outline:none}
+.btn-preg{background:#2563eb; color:white; border:none; padding:0 18px; border-radius:10px; font-weight:700; cursor:pointer}
+.sugerencias{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px 0}
+.chip-sug{padding:7px 12px; border-radius:20px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:12px; font-weight:600; cursor:pointer; transition:.15s}
+.chip-sug:hover{background:var(--text); color:var(--bg)}
+.historial-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px}
+.historial-q{font-weight:700; font-size:13px}
+.historial-fecha{font-size:11px; color:var(--muted); margin:2px 0 8px 0}
+.historial-a{background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; line-height:1.5}
+</style>
+
+<div class="chat-head"><span style="font-size:24px">💬</span><h2 style="margin:0; font-weight:900">Chat con IA</h2></div>
+<div class="chat-sub">Pregunta sobre tu inventario real - la IA responde con datos de tu base</div>
+
+<form method="POST" class="chat-box">
+{% csrf_token %}
+<input name="pregunta" id="pregInput" value="{{pregunta_actual|default:''}}" placeholder="¿Cuánto vale todo el inventario?" class="chat-input" required>
+<button class="btn-preg">Preguntar →</button>
+</form>
+
+<div class="sugerencias">
+<span style="font-size:12px; color:var(--muted); width:100%; margin-bottom:2px">Prueba con:</span>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Cuánto vale todo el inventario?</button>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Cuál es el producto más caro?</button>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Qué productos tienen stock bajo?</button>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Cuántas laptops hay en stock?</button>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Qué categorías hay y cuántos productos por categoría?</button>
+<button type="button" class="chip-sug" onclick="preguntarSug(this)">¿Qué productos valen más de Bs 1000?</button>
+</div>
+
+<div style="display:flex; align-items:center; gap:6px; margin:10px 0"><span>🕘</span><b>Historial</b></div>
+
+{% for h in historial %}
+<div class="historial-card">
+<div class="historial-q">{{h.pregunta}}</div>
+<div class="historial-fecha">{{h.fecha|date:"d/m/Y H:i"}}</div>
+<div class="historial-a">{{h.respuesta}}</div>
+</div>
+{% empty %}
+<div style="text-align:center; color:var(--muted); padding:30px; border:1px dashed var(--border); border-radius:12px">Aún no hay preguntas - prueba con las sugerencias de arriba</div>
+{% endfor %}
+
+<script>
+function preguntarSug(el){
+ document.getElementById('pregInput').value = el.innerText;
+ document.getElementById('pregInput').focus();
+}
+</script>
+{% endblock %}

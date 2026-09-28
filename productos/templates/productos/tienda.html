@@ -1,0 +1,55 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.search-row{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0}
+.search-input{flex:1; min-width:240px; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); outline:none}
+.cat-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px}
+.cat-chip{padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:var(--card); color:var(--muted); text-decoration:none; font-size:12px; font-weight:600}
+.cat-chip.activo{background:var(--text); color:var(--bg); border-color:var(--text)}
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px }
+.card{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; transition:.15s }
+.card:hover{ border-color:var(--border2); transform:translateY(-1px) }
+.card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px}
+.card-title{font-size:14px; font-weight:700; line-height:1.3}
+.card-code{font-size:10px; font-weight:700; letter-spacing:.5px; color:var(--muted); border:1px solid var(--border); padding:3px 7px; border-radius:6px; white-space:nowrap}
+.card-desc{font-size:12px; color:var(--muted); line-height:1.4; margin:4px 0 10px 0; min-height:18px}
+.card-cat{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px}
+.card-foot{display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:12px; border-top:1px solid var(--border)}
+.price{font-weight:800; font-size:14px}
+.stock{font-size:11px; font-weight:600; color:#22c55e}
+.btn-add{margin-top:12px; width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-weight:700; font-size:13px; cursor:pointer; text-align:center; text-decoration:none; transition:.15s}
+.btn-add:hover{background:var(--text); color:var(--bg)}
+</style>
+
+<h2 style="font-weight:800; font-size:22px; letter-spacing:-.5px; margin:0">Tienda</h2>
+<p style="color:var(--muted); font-size:13px; margin:4px 0 0 0">{{total_resultados}} productos {% if cat_actual %} en {{cat_actual}} {% endif %}</p>
+
+<div class="search-row">
+<form method="GET" style="display:flex; gap:8px; flex:1">
+<input name="q" value="{{q}}" placeholder="Buscar producto..." class="search-input">
+{% if cat_actual %}<input type="hidden" name="cat" value="{{cat_actual}}">{% endif %}
+<button class="btn-add" style="width:auto; margin:0; padding:0 18px; background:var(--text); color:var(--bg)">Buscar</button>
+</form>
+</div>
+
+<div class="cat-row">
+<a href="/tienda/?{% if q %}q={{q}}{% endif %}" class="cat-chip {% if not cat_actual %}activo{% endif %}">Todas</a>
+{% for c in categorias %}
+<a href="/tienda/?cat={{c}}{% if q %}&q={{q}}{% endif %}" class="cat-chip {% if cat_actual == c %}activo{% endif %}">{{c}}</a>
+{% endfor %}
+</div>
+
+<div class="grid">
+{% for p in productos %}
+<div class="card">
+<div class="card-top"><div class="card-title">{{p.nombre}}</div><div class="card-code">{{p.codigo}}</div></div>
+<div class="card-desc">{{p.descripcion|default:""|truncatechars:60}}</div>
+<div class="card-cat">{{p.categoria}}</div>
+<div class="card-foot"><span class="price">Bs {{p.precio}}</span><span class="stock">Stock: {{p.cantidad_existente}}</span></div>
+<a href="/agregar/{{p.id}}/" class="btn-add">Agregar</a>
+</div>
+{% empty %}
+<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted)">No hay productos</div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<div class="card" style="padding:28px; max-width:700px; margin:0 auto" id="facturaPrint">
+<div style="display:flex; justify-content:space-between; align-items:center">
+<div><h2 style="font-weight:900">💻 Tecno Center</h2><small style="color:var(--muted)">NIT: 1234567019 - La Guardia, SC</small></div>
+<div style="text-align:right"><b>FACTURA N° {{f.num}}</b><br><small>{{f.fecha}}</small></div>
+</div>
+<hr style="margin:18px 0">
+<h3>Datos Cliente</h3>
+<div style="margin-top:8px; line-height:1.6"><b>Nombre:</b> {{f.nombre}}<br><b>CI/NIT:</b> {{f.ci}}<br><b>Tel:</b> {{f.telefono}}<br><b>Dir:</b> {{f.direccion}}</div>
+<hr style="margin:18px 0">
+<h3>Detalle</h3>
+<table style="width:100%; margin-top:10px; border-collapse:collapse">
+<tr style="background:var(--bg); text-align:left"><th style="padding:8px; border-bottom:1px solid var(--border)">Producto</th><th style="padding:8px; border-bottom:1px solid var(--border)">Cant</th><th style="padding:8px; border-bottom:1px solid var(--border)">Precio</th><th style="padding:8px; border-bottom:1px solid var(--border)">Subtotal</th></tr>
+{% for it in f.items %}
+<tr><td style="padding:8px; border-bottom:1px solid var(--border)">{{it.nombre}} <small style="opacity:.5">{{it.codigo}}</small></td><td style="padding:8px; border-bottom:1px solid var(--border)">{{it.cantidad}}</td><td style="padding:8px; border-bottom:1px solid var(--border)">Bs {{it.precio}}</td><td style="padding:8px; border-bottom:1px solid var(--border)">Bs {{it.subtotal}}</td></tr>
+{% endfor %}
+</table>
+<div style="text-align:right; margin-top:16px; font-size:20px; font-weight:900">TOTAL: <span style="color:#22c55e">Bs {{f.total}}</span></div>
+<div style="margin-top:20px; text-align:center; opacity:.6; font-size:12px">¡Gracias por su compra! - Tecno Center</div>
+</div>
+<div style="max-width:700px; margin:16px auto; display:flex; gap:10px">
+<button onclick="window.print()" style="flex:1; background:#0f172a; color:white; padding:12px; border-radius:10px; border:none; font-weight:800; cursor:pointer">🖨️ Imprimir Factura</button>
+<a href="/" style="flex:1; background:#22c55e; color:white; padding:12px; border-radius:10px; text-align:center; text-decoration:none; font-weight:800">Volver al Inicio</a>
+</div>
+<style>@media print{ nav, button, a{display:none!important} body{background:white} }</style>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.r-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0}
+.r-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse}th{font-size:11px;color:var(--muted);padding:12px;text-align:left}td{padding:11px 12px;border-top:1px solid var(--border);font-size:13px}
+.total-big{background:linear-gradient(135deg,#0f172a,#1e40af);color:white;padding:18px;border-radius:12px;text-align:center;margin:16px 0}
+.btn-back{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--text);text-decoration:none;font-weight:700;font-size:13px}
+</style>
+<div class="r-header">
+<div><a href="/reportes/" class="btn-back">← Volver a reportes</a><h1 style="margin:12px 0 0;font-size:22px;font-weight:900">{{titulo}}</h1></div>
+<form method="post" action="/reportes-explicar/">{% csrf_token %}
+<input type="hidden" name="tipo" value="{{titulo}}">
+<button class="btn btn-primary">🤖 Explicar con Ollama</button>
+</form>
+</div>
+{% if valor_extra %}<div class="total-big"><div style="font-size:11px;opacity:.7">VALOR TOTAL</div><div style="font-size:32px;font-weight:900">Bs. {{valor_extra}}</div></div>{% endif %}
+{% if tipo == "categoria" %}
+{% for cat, prods in categorias_data.items %}<h3 style="margin:18px 0 8px">{{cat}} ({{prods.count}})</h3><div class="r-box"><table><tr><th>CODIGO</th><th>PRODUCTO</th><th>STOCK</th><th>PRECIO</th></tr>{% for p in prods %}<tr><td>{{p.codigo}}</td><td>{{p.nombre}}</td><td>{{p.cantidad_existente}}</td><td>Bs. {{p.precio}}</td></tr>{% endfor %}</table></div>{% endfor %}
+{% else %}<div class="r-box"><table><tr><th>CODIGO</th><th>PRODUCTO</th><th>CATEGORIA</th><th>STOCK</th><th>ESTADO</th><th>PRECIO</th></tr>{% for p in productos %}<tr><td style="font-family:monospace">{{p.codigo}}</td><td><b>{{p.nombre}}</b></td><td>{{p.get_categoria_display}}</td><td>{{p.cantidad_existente}}</td><td>{{p.estado_texto}}</td><td>Bs. {{p.precio}}</td></tr>{% empty %}<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">No hay datos</td></tr>{% endfor %}</table></div>{% endif %}
+{% endblock %}

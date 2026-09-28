@@ -1,0 +1,22 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.title{font-size:26px;font-weight:900;margin:22px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:18px}
+.card-report{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:20px;text-decoration:none;color:var(--text);display:block;transition:.25s;position:relative;overflow:hidden}
+.card-report:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.25);border-color:currentColor}
+.card-report .num{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:white;margin-bottom:12px}
+</style>
+<h1 class="title">📊 Centro de Reportes</h1>
+<p style="color:var(--muted);font-size:14px">8 reportes predefinidos + explicación con Ollama</p>
+<div class="grid">
+<a href="/reportes/todos/" class="card-report" style="color:#3b82f6"><div class="num" style="background:#3b82f6">1</div><b>Todos los productos</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Lista completa del inventario</div></a>
+<a href="/reportes/caro/" class="card-report" style="color:#ef4444"><div class="num" style="background:#ef4444">2</div><b>Producto más caro</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Mayor precio registrado</div></a>
+<a href="/reportes/barato/" class="card-report" style="color:#22c55e"><div class="num" style="background:#22c55e">3</div><b>Producto más barato</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Menor precio</div></a>
+<a href="/reportes/pocas/" class="card-report" style="color:#f59e0b"><div class="num" style="background:#f59e0b">4</div><b>Pocas existencias</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Stock ≤ mínimo</div></a>
+<a href="/reportes/agotados/" class="card-report" style="color:#ef4444"><div class="num" style="background:linear-gradient(135deg,#ef4444,#dc2626)">5</div><b>Agotados</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Sin stock</div></a>
+<a href="/reportes/categoria/" class="card-report" style="color:#a855f7"><div class="num" style="background:#a855f7">6</div><b>Por categoría</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Agrupados por tipo</div></a>
+<a href="/reportes/valor_total/" class="card-report" style="color:#06b6d4"><div class="num" style="background:#06b6d4">7</div><b>Valor total</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Bs. del inventario</div></a>
+<a href="/reportes/mayor_cantidad/" class="card-report" style="color:#f97316"><div class="num" style="background:#f97316">8</div><b>Mayor cantidad</b><div style="font-size:12px;color:var(--muted);margin-top:6px">Top 10 con más stock</div></a>
+</div>
+{% endblock %}

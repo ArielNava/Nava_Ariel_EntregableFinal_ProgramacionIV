@@ -1,0 +1,51 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.badge-activo{ background:#22c55e20; color:#22c55e; border:1px solid #22c55e40; padding:4px 12px; border-radius:20px; font-weight:900; font-size:12px }
+.search-wrap{ display:flex; gap:8px; align-items:center; flex-wrap:wrap }
+.search-input{ flex:1; min-width:260px; padding:12px 14px; border-radius:10px; border:1px solid #334155; background:#1e293b; color:white }
+.btn-buscar{ padding:12px 18px; background:#2563eb; color:white; border:none; border-radius:10px; font-weight:800; cursor:pointer }
+.btn-limpiar{ padding:12px 14px; background:#1e293b; color:#94a3b8; border:1px solid #334155; border-radius:10px; text-decoration:none; font-weight:700 }
+.btn-limpiar:hover{ color:white; border-color:#94a3b8 }
+.btn-agregar{ padding:12px 20px; background:#22c55e; color:white; border-radius:10px; text-decoration:none; font-weight:900; margin-left:auto; white-space:nowrap; box-shadow:0 2px 8px #22c55e40 }
+</style>
+
+<h2 style="font-weight:900; font-size:22px">📦 Inventario - {{total_resultados}} productos | Valor Bs {{total_valor}}</h2>
+
+<div class="search-wrap" style="margin:14px 0">
+<form method="GET" style="display:flex; gap:8px; flex:1; min-width:300px">
+<input name="q" value="{{q}}" placeholder="Buscar por codigo, nombre, categoria, descripcion..." class="search-input">
+<button class="btn-buscar">Buscar</button>
+{% if q %}
+<a href="/" class="btn-limpiar" title="Limpiar búsqueda">✕</a>
+{% endif %}
+</form>
+<a href="/agregar-producto/" class="btn-agregar">+ Agregar Producto</a>
+</div>
+
+{% if q %}
+<div style="margin-bottom:10px; color:#94a3b8; font-size:12px">🔍 Filtrando por: <b style="color:white">"{{q}}"</b> — {{total_resultados}} encontrados — <a href="/" style="color:#60a5fa">limpiar</a></div>
+{% endif %}
+
+<div style="background:#162032; border-radius:14px; overflow:auto; border:1px solid #1e3a5f">
+<table style="width:100%; border-collapse:collapse; font-size:13px">
+<tr style="background:#1e3a8a; color:white; font-size:11px"><th style="padding:12px; text-align:left">NOMBRE / DESCRIPCION</th><th>CODIGO</th><th>CATEGORIA</th><th>STOCK</th><th>MIN</th><th>ESTADO</th><th>PRECIO</th><th>ACCION</th></tr>
+{% for p in productos %}
+<tr style="border-bottom:1px solid #1e293b">
+<td style="padding:11px"><b style="font-size:14px">{{p.nombre}}</b>{% if p.descripcion %}<br><small style="color:#94a3b8; font-size:11px">📝 {{p.descripcion}}</small>{% endif %}</td>
+<td style="font-weight:700">{{p.codigo}}</td>
+<td style="color:#93c5fd">{{p.categoria}}</td>
+<td style="text-align:center; font-weight:700">{{p.cantidad_existente}}</td>
+<td style="text-align:center">{{p.stock_minimo}}</td>
+<td style="text-align:center"><span class="badge-activo">Activo</span></td>
+<td style="font-weight:800; white-space:nowrap">Bs. {{p.precio}}</td>
+<td style="white-space:nowrap">
+<a href="/editar-producto/{{p.id}}/" style="background:#3b82f6; padding:6px 8px; border-radius:7px; text-decoration:none">✏️</a>
+<a href="/eliminar-producto/{{p.id}}/" onclick="return confirm('¿Eliminar?')" style="background:#ef4444; padding:6px 8px; border-radius:7px; color:white; text-decoration:none">🗑️</a>
+<a href="/agregar/{{p.id}}/" style="background:#22c55e; padding:6px 8px; border-radius:7px; color:white; text-decoration:none">🛒</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

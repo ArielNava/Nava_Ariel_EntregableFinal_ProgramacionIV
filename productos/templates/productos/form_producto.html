@@ -1,0 +1,21 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.form-card{max-width:580px;margin:30px auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.actions{display:flex;gap:10px;margin-top:20px}
+.link-volver{display:inline-flex;align-items:center;gap:6px;margin-top:24px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);transition:.2s}
+.link-volver:hover{color:var(--text);border-color:var(--text);transform:translateX(-2px)}
+</style>
+<div class="form-card">
+<h1 style="margin:0 0 6px;font-weight:900;font-size:24px">{{titulo}}</h1>
+<p style="color:var(--muted);margin:0 0 20px;font-size:14px">El código se genera automáticamente</p>
+<form method="post">{% csrf_token %}
+{{form.as_p}}
+<div class="actions">
+<button class="btn btn-primary" style="flex:1">💾 Guardar Producto</button>
+<a href="/" class="btn" style="flex:1;text-align:center;text-decoration:none;background:var(--card2);border:1px solid var(--border);color:var(--text)">Cancelar</a>
+</div>
+</form>
+<a href="/" class="link-volver">← Volver al Inventario</a>
+</div>
+{% endblock %}

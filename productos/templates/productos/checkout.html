@@ -1,0 +1,28 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<h1 style="font-size:26px; font-weight:900">🧾 Datos del Cliente</h1>
+<div style="display:grid; grid-template-columns:1fr 380px; gap:20px; margin-top:20px">
+<div class="card" style="padding:20px">
+<form method="POST">
+{% csrf_token %}
+<label style="font-weight:700">Nombre Completo</label>
+<input name="nombre" required placeholder="Ej: Juan Perez" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border); margin:6px 0 14px 0">
+<label style="font-weight:700">CI / NIT</label>
+<input name="ci" required placeholder="Ej: 1234567" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border); margin:6px 0 14px 0">
+<label style="font-weight:700">Teléfono</label>
+<input name="telefono" placeholder="Ej: 70012345" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border); margin:6px 0 14px 0">
+<label style="font-weight:700">Dirección</label>
+<input name="direccion" placeholder="Ej: Av. Banzer" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border); margin:6px 0 20px 0">
+<button type="submit" style="width:100%; background:#2563eb; color:white; padding:14px; border-radius:10px; border:none; font-weight:900; font-size:16px; cursor:pointer">✅ Generar Factura</button>
+</form>
+</div>
+<div class="card" style="padding:20px; height:fit-content">
+<h3>Resumen ({{count}} productos)</h3>
+{% for i in items %}
+<div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px"><span>{{i.producto.nombre}} x{{i.cantidad}}</span><b>Bs {{i.subtotal}}</b></div>
+{% endfor %}
+<hr style="margin:14px 0; opacity:.2">
+<div style="display:flex; justify-content:space-between; font-size:18px; font-weight:900"><span>Total:</span><span style="color:#22c55e">Bs {{total}}</span></div>
+</div>
+</div>
+{% endblock %}

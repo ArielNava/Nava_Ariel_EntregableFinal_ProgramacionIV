@@ -1,0 +1,51 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<style>
+.header-row{display:flex;justify-content:space-between;align-items:center;margin:14px 0 16px}
+.h-title{font-size:22px;font-weight:800}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--bg);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:12px 10px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:12px 10px;border-bottom:1px solid var(--border)}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+.badge-activo{background:rgba(22,163,74,.15);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
+.badge-inactivo{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.action-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+</style>
+
+<div class="header-row">
+<div class="h-title">📦 Inventario</div>
+<a href="/agregar/" class="btn btn-primary" style="text-decoration:none">+ Agregar producto</a>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Min</th><th>Estado</th><th>Precio</th><th>Acciones</th></tr>
+</thead>
+<tbody>
+{% for p in productos %}
+<tr>
+<td><b>{{p.codigo}}</b></td>
+<td>{{p.nombre}}</td>
+<td>{{p.get_categoria_display}}</td>
+<td>{{p.cantidad_existente}}</td>
+<td>{{p.cantidad_minima}}</td>
+<td>
+{% if p.estado %}
+<span class="badge badge-activo">Activo</span>
+{% else %}
+<span class="badge badge-inactivo">Inactivo</span>
+{% endif %}
+</td>
+<td><b>Bs. {{p.precio}}</b></td>
+<td>
+<a href="/editar/{{p.id}}/" class="action-btn">✏️</a>
+<a href="/eliminar/{{p.id}}/" class="action-btn" style="margin-left:4px">🗑️</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

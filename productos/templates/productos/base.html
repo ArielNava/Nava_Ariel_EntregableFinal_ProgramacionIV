@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tecno Center</title>
+<style>
+:root{ --bg:#0b1220; --card:#162032; --card2:#1e293b; --border:#1e3a5f; --border2:#334155; --text:#e2e8f0; --muted:#94a3b8; --blue:#2563eb }
+[data-theme="light"]{ --bg:#f1f5f9; --card:#ffffff; --card2:#e2e8f0; --border:#cbd5e1; --border2:#94a3b8; --text:#0f172a; --muted:#64748b; --blue:#2563eb }
+*{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important; box-sizing:border-box }
+body{ background:var(--bg); color:var(--text); margin:0; transition:.2s }
+.nav{ background:var(--card); padding:12px 20px; display:flex; gap:18px; align-items:center; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100 }
+.nav a{ color:var(--muted); text-decoration:none; font-weight:700; font-size:14px } .nav a:hover{ color:var(--text) }
+.container{ padding:20px; max-width:1200px; margin:0 auto; padding-bottom:100px }
+.fab{ position:fixed; bottom:20px; right:20px; background:#22c55e; color:white; padding:12px 20px; border-radius:30px; font-weight:900; text-decoration:none; box-shadow:0 5px 20px black; z-index:999 }
+.theme-btn{ margin-left:auto; background:var(--card2); border:1px solid var(--border2); color:var(--text); padding:7px 12px; border-radius:20px; cursor:pointer; font-weight:800; font-size:13px }
+</style></head><body>
+<div class="nav"><div style="color:var(--text); font-weight:900">💻 Tecno Center</div><a href="/">Inventario</a><a href="/tienda/">Tienda</a><a href="/reportes/">Reportes</a><a href="/chat/">Chat IA</a><button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Oscuro</button></div>
+<div class="container">{% block content %}{% endblock %}</div>
+{% if carrito_count %}<a href="/carrito/" class="fab">🛒 Ver Carrito {{carrito_count}}</a>{% endif %}
+<script>
+function toggleTheme(){
+ let t=document.documentElement.getAttribute('data-theme');
+ let nt=t==='light'?'dark':'light';
+ document.documentElement.setAttribute('data-theme',nt); localStorage.setItem('theme',nt);
+ document.getElementById('themeBtn').innerText=nt==='light'?'☀️ Claro':'🌙 Oscuro';
+}
+(function(){ let s=localStorage.getItem('theme')||'dark'; document.documentElement.setAttribute('data-theme',s); setTimeout(()=>{ let b=document.getElementById('themeBtn'); if(b) b.innerText=s==='light'?'☀️ Claro':'🌙 Oscuro'; },100) })();
+</script>
+</body></html>
